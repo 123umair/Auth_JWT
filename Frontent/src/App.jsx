@@ -1,15 +1,14 @@
-import Form from './component/Form/Form'
-
 import './App.css'
+import { Route, Routes } from 'react-router'
+import Form from './component/Form/Form'
+import LoginForm from './component/Form/LoginForm'
 
 function App() {
-
-
   return (
-    <>
-      <p className='bg-blue-700 text-7xl text-center'>Hello Umair Learning Authenticatin using JWT</p>
-      <Form></Form>
-    </>
+    <Routes>
+      <Route path='/' element={<Form />}></Route>
+      <Route path='/login' element={<LoginForm />} />
+    </Routes>
   )
 }
 

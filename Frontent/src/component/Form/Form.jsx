@@ -16,7 +16,7 @@ const Form = () => {
     const onSubmit = async (data) => {
         console.log("hitting")
         try {
-            await axios.post(`${API}/userdata`, data)
+            let res = await axios.post(`${API}/userdata`, data)
 
         } catch (error) {
             console.log("error", error)
@@ -96,7 +96,7 @@ const Form = () => {
                     )}
                 </div>
 
-                {/* Password */}
+                {/* Age */}
                 <div>
                     <label className='block mb-1 font-medium'>
                         Age
