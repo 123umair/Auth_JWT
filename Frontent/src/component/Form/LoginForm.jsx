@@ -1,4 +1,4 @@
-import React from 'react'
+
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useNavigate } from 'react-router'
@@ -12,13 +12,27 @@ const LoginForm = () => {
     const { register, handleSubmit, formState: { errors } } = useForm({
         resolver: zodResolver(loginformSchema)
     })
-
+    const navigate = useNavigate()
 
     const onSubmit = async (data) => {
         try {
             let res = await axios.post(`${API}/login`, data)
         } catch (error) {
             console.log(error, 'error')
+        }
+    }
+    const handleLogout = async () => {
+        try {
+            const res = await axios.post(`${API}/logout`, { widthCradentials: true })
+            if (res) {
+                console.log(res.data.message, 'use is successfully logedout')
+                navigate('/')
+                return
+            }
+
+        }
+        catch (error) {
+            console.log("Error", error)
         }
     }
 
@@ -88,7 +102,13 @@ const LoginForm = () => {
                 </button>
 
             </form>
-
+            <button
+                type="submit"
+                className='w-full  text-blue-600 py-2 rounded-md transition'
+                onClick={() => { handleLogout() }}
+            >
+                Logout
+            </button>
         </div>
     )
 }

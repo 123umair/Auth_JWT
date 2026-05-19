@@ -19,7 +19,9 @@ import { User } from './Models/userSchema.js'
 const frontendOrigin = process.env.Frontend_Url
 
 
-app.use(cors({origin: frontendOrigin}))
+app.use(cors({origin: frontendOrigin,
+    credentials:true
+}))
 
 app.post('/userdata',async(req,res,next)=>{
    try {
@@ -33,7 +35,11 @@ app.post('/userdata',async(req,res,next)=>{
         age})
   
     let token = jwt.sign({email},'secretkey') // now this is token and we will send this token as a cookie in the frontend
-    res.cookie('token',token)
+    res.cookie('token',token, 
+      {  httpOnly:true, // React ka JavaScript is cookie ko read nahi kar sakega (XSS protection)
+        secure:false, //Agar localhost (development) hai to false, production (HTTPS) par true karein
+        sameSite:'lax' //// Cross-site requests ke liye safe option
+   })
     const user =  await newUser.save()
     res.json({sucess:true,message:"hello this is token"})
 }
@@ -46,6 +52,14 @@ app.post('/userdata',async(req,res,next)=>{
 app.post('/login',(req,res)=>{
     let {username,password} = req.body
     console.log('request body',req.body)
+})
+app.post('/logout',(req,res)=>{
+    res.clearCookie('token',{
+        httponly:true,
+        secure:false,
+        sameSite:'lax'
+    })
+    res.json({success:true,message:'user successfully logedout'})
 })
 
 

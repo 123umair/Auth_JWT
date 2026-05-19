@@ -1,9 +1,11 @@
-import React from 'react'
+
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { formSchema } from './FormSchema'
 import axios from 'axios'
+import { useNavigate } from 'react-router'
 const Form = () => {
+    const navigate = useNavigate()
     const API = import.meta.env.VITE_API_URL
     const {
         register,
@@ -16,8 +18,14 @@ const Form = () => {
     const onSubmit = async (data) => {
         console.log("hitting")
         try {
-            let res = await axios.post(`${API}/userdata`, data)
-
+            let res = await axios.post(`${API}/userdata`, data, {
+                withCredentials: true
+            })
+            if (res) {
+                console.log(res.data.message)
+                navigate('/login')
+                return
+            }
         } catch (error) {
             console.log("error", error)
         }
@@ -123,6 +131,7 @@ const Form = () => {
                 >
                     Submit
                 </button>
+
 
             </form>
         </div>
