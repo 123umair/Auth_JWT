@@ -52,10 +52,12 @@ app.post('/userdata',async(req,res,next)=>{
 app.post('/login',(req,res)=>{
     let {username,password} = req.body
     console.log('request body',req.body)
+    
+   
 })
 app.post('/logout',(req,res)=>{
     res.clearCookie('token',{
-        httponly:true,
+        httpOnly:true,
         secure:false,
         sameSite:'lax'
     })

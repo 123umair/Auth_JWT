@@ -16,14 +16,14 @@ const LoginForm = () => {
 
     const onSubmit = async (data) => {
         try {
-            let res = await axios.post(`${API}/login`, data)
+            let res = await axios.post(`${API}/login`, data, { withCredentials: true })
         } catch (error) {
             console.log(error, 'error')
         }
     }
     const handleLogout = async () => {
         try {
-            const res = await axios.post(`${API}/logout`, { widthCradentials: true })
+            const res = await axios.post(`${API}/logout`, {}, { withCredentials: true })
             if (res) {
                 console.log(res.data.message, 'use is successfully logedout')
                 navigate('/')
