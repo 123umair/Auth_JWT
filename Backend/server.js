@@ -49,9 +49,16 @@ app.post('/userdata',async(req,res,next)=>{
    }
     
 })
-app.post('/login',(req,res)=>{
-    let {username,password} = req.body
-    console.log('request body',req.body)
+app.post('/login',async(req,res)=>{
+   
+    const user = await User.findOne({email:req.body.email})
+    console.log('user',user)
+    if(!user)
+    {
+        res.json({success:false,message:"error user is not found"})
+        return
+    }
+    res.json({sucess:true,user})
     
    
 })

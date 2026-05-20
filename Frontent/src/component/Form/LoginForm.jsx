@@ -3,11 +3,14 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useNavigate } from 'react-router'
 import { loginformSchema } from './LoginFormSchema'
+import { useState } from 'react'
+import Welcome from '../Page/Welcome'
 import axios from 'axios'
 
 
 const LoginForm = () => {
 
+    const [data, setData] = useState(null)
     const API = import.meta.env.VITE_API_URL
     const { register, handleSubmit, formState: { errors } } = useForm({
         resolver: zodResolver(loginformSchema)
@@ -17,6 +20,12 @@ const LoginForm = () => {
     const onSubmit = async (data) => {
         try {
             let res = await axios.post(`${API}/login`, data, { withCredentials: true })
+            console.log('hitting')
+            if (res) {
+                console.log(res.data.user)
+                setData(res.data.user)
+
+            }
         } catch (error) {
             console.log(error, 'error')
         }
@@ -49,24 +58,24 @@ const LoginForm = () => {
                 <h1 className='text-2xl font-bold text-center'>
                     Login Form
                 </h1>
-                {/* Username */}
+                {/* Email */}
                 <div>
                     <label className='block mb-1 font-medium'>
-                        Username
+                        email
                     </label>
-                    <input type="text"
-                        placeholder='Enter username'
-                        {...register('username')}
+                    <input type="email"
+                        placeholder='Enter email'
+                        {...register('email')}
                         className='w-full border
                 border-gray-300
                 rounded-md p-2
                 outline-none
                 focus:ring-2 focus:ring-blue-400' />
 
-                    {errors.username && (
+                    {errors.email && (
                         <p
                             className='text-red-500 text-sm mt-1'>
-                            {errors.username.message}
+                            {errors.email.message}
                         </p>
                     )}
                 </div>
@@ -108,7 +117,7 @@ const LoginForm = () => {
                     Logout
                 </button>
             </form>
-
+            {data ? <Welcome userData={data}></Welcome> : <p>Data is not availabe</p>}
         </div>
     )
 }
