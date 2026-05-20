@@ -100,15 +100,15 @@ const LoginForm = () => {
                 >
                     Submit
                 </button>
-
+                <button
+                    type="submit"
+                    className='w-full  text-blue-600 py-2 rounded-md transition'
+                    onClick={() => { handleLogout() }}
+                >
+                    Logout
+                </button>
             </form>
-            <button
-                type="submit"
-                className='w-full  text-blue-600 py-2 rounded-md transition'
-                onClick={() => { handleLogout() }}
-            >
-                Logout
-            </button>
+
         </div>
     )
 }
