@@ -4,7 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useNavigate } from 'react-router'
 import { loginformSchema } from './LoginFormSchema'
 import { useState } from 'react'
-import Welcome from '../Page/Welcome'
+
 import axios from 'axios'
 
 
@@ -21,11 +21,12 @@ const LoginForm = () => {
         try {
             let res = await axios.post(`${API}/login`, data, { withCredentials: true })
             console.log('hitting')
-            if (res) {
-                console.log(res.data.user)
-                setData(res.data.user)
-
+            if (res.data.success) {
+                console.log(res.data)
+                navigate(`/welcome`)
             }
+            console.log(res.data)
+
         } catch (error) {
             console.log(error, 'error')
         }
@@ -117,7 +118,7 @@ const LoginForm = () => {
                     Logout
                 </button>
             </form>
-            {data ? <Welcome userData={data}></Welcome> : <p>Data is not availabe</p>}
+
         </div>
     )
 }

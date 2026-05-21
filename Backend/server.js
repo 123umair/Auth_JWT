@@ -51,14 +51,25 @@ app.post('/userdata',async(req,res,next)=>{
 })
 app.post('/login',async(req,res)=>{
    
-    const user = await User.findOne({email:req.body.email})
-    console.log('user',user)
-    if(!user)
-    {
-        res.json({success:false,message:"error user is not found"})
-        return
-    }
-    res.json({sucess:true,user})
+try {
+      const user = await User.findOne({email:req.body.email})
+
+    if(!user) return res.json({success:false,message:"email or password is incorrect"})
+
+   const Match = await bcryptjs.compare(req.body.password,user.password)
+   if (!Match){
+        return   res.json({success:false,message:"something went wrong"})
+      }
+
+      return res.json({success:true,user})
+   }
+
+    
+ // here bcrypt.compare frist parameter a unahsed password coming direcctly from thew login form who can take email and password and one password of the user is store in the database at hashed form so they compare both of them after that it will give the true if both are correct
+   
+ catch (error) {
+        console.log('error',error)
+}
     
    
 })
