@@ -37,7 +37,7 @@ app.post('/userdata',async(req,res,next)=>{
     let token = jwt.sign({email},'secretkey') // now this is token and we will send this token as a cookie in the frontend
     res.cookie('token',token, 
       {  httpOnly:true, // React ka JavaScript is cookie ko read nahi kar sakega (XSS protection)
-        secure:false, //Agar localhost (development) hai to false, production (HTTPS) par true karein
+        secure:false, //Agar localeyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVrNjg1OTk0QGdtYWlsLmNvbSIsImlhdCI6MTc3OTM0ODU3Nn0.A42_Q3O4e-vBwTLDAbXVSsfEe0Hm4u3qrPIf4a-aGIchost (development) hai to false, production (HTTPS) par true karein
         sameSite:'lax' //// Cross-site requests ke liye safe option
    })
     const user =  await newUser.save()
@@ -60,7 +60,14 @@ try {
    if (!Match){
         return   res.json({success:false,message:"something went wrong"})
       }
-
+      let token = jwt.sign({email:req.body.email},'secretkey')
+      res.cookie('token',token,
+        {
+        httpOnly:true,
+        secure:false,
+        sameSite:'lax'
+        }
+      )
       return res.json({success:true,user})
    }
 
